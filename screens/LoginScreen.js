@@ -5,16 +5,19 @@ import {
   StyleSheet,
   TextInput,
   Dimensions,
+  Image,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
+import { getAuth, signInWithPopup, FacebookAuthProvider } from "firebase/auth";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
+  const provider = new FacebookAuthProvider();
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
@@ -43,12 +46,38 @@ const LoginScreen = () => {
       });
   };
 
+  const handleSignInWithFacebook = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // The signed-in user info.
+        const user = result.user;
+
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        const credential = FacebookAuthProvider.credentialFromResult(result);
+        const accessToken = credential.accessToken;
+
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = FacebookAuthProvider.credentialFromError(error);
+
+        // ...
+      });
+  };
+
   return (
     <View
       style={{
         flex: 1,
         alignItems: "center",
-        backgroundColor:"white"
+        backgroundColor: "white",
+        justifyContent: "space-between",
       }}
     >
       <View
@@ -56,37 +85,52 @@ const LoginScreen = () => {
           marginTop: 35,
         }}
       >
-        <Text>Idioma</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Image
+            style={{
+              width: 50,
+              height: 50,
+            }}
+            source={require("../assets/home.png")}
+          />
+        </TouchableOpacity>
       </View>
       <View style={styles.containerView}>
-        <Text style={{
-          marginBottom:10,
-         fontSize:40
-        }}>
+        <Text
+          style={{
+            marginBottom: 10,
+            fontSize: 40,
+            fontWeight: "bold",
+          }}
+        >
           Instagram
         </Text>
-        <View style={{
-width: Dimensions.get("window").width - 40,
-borderColor: "#E2E2E2",
-borderWidth: 4,
-marginVertical: 5,
-paddingVertical:7,
-backgroundColor:"#fafafa"
-        }}>
+        <View
+          style={{
+            width: Dimensions.get("window").width - 40,
+            borderColor: "#E2E2E2",
+            borderWidth: 2,
+            marginVertical: 5,
+            paddingVertical: 7,
+            backgroundColor: "#fafafa",
+          }}
+        >
           <TextInput
             style={styles.inputFields}
             placeholder="Email"
             value={email}
             onChangeText={(text) => setEmail(text)}
           />
-          </View>
-          <View style={{
-width: Dimensions.get("window").width - 40,
-borderColor: "#E2E2E2",
-borderWidth: 4,
-marginVertical: 5,
-paddingVertical:7
-}}>
+        </View>
+        <View
+          style={{
+            width: Dimensions.get("window").width - 40,
+            borderColor: "#E2E2E2",
+            borderWidth: 2,
+            marginVertical: 5,
+            paddingVertical: 7,
+          }}
+        >
           <TextInput
             style={styles.inputFields}
             secureTextEntry
@@ -104,6 +148,50 @@ paddingVertical:7
             Iniciar Sessão
           </Text>
         </TouchableOpacity>
+
+        {/*  <TouchableOpacity
+          style={styles.buttonLogin}
+          onPress={handleSignInWithFacebook}
+        >
+          <Text
+            style={{
+              color: "white",
+            }}
+          >
+            Iniciar sessão com Facebook
+          </Text>
+        </TouchableOpacity>  */}
+      </View>
+      <View
+        style={{
+          borderWidth: 1,
+          width: Dimensions.get("window").width,
+          justifyContent: "center",
+          padding: 10,
+          borderLeftWidth: 0,
+          borderRightWidth: 0,
+          borderBottomWidth: 0,
+          flexDirection: "row",
+          marginBottom: 5,
+          marginHorizontal: 5,
+        }}
+      >
+        <Text
+          style={{
+            marginHorizontal: 5,
+          }}
+        >
+          Não tens conta ainda?
+        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+          <Text
+            style={{
+              fontWeight: "bold",
+            }}
+          >
+            Regista-te
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -118,6 +206,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonLogin: {
+    marginTop: 5,
     borderRadius: 4,
     paddingVertical: 10,
     width: Dimensions.get("window").width - 40,
@@ -126,7 +215,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   inputFields: {
-    marginLeft:10,
+    marginLeft: 10,
   },
 });
 

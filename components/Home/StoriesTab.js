@@ -4,7 +4,7 @@ import React from "react";
 const StoriesTab = () => {
   return (
     <View style={styles.viewContainer}>
-      <ScrollView horizontal>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <Storie />
         <Storie />
         <Storie />
@@ -21,13 +21,15 @@ const StoriesTab = () => {
 
 const Storie = () => (
   <View style={styles.storieContainer}>
-    <View style={{
-      borderColor: "#FF3D00",
-      borderWidth: 4,
-      padding:5,
-      borderRadius: 50,
-      alignItems: "center",
-    }}>
+    <View
+      style={{
+        borderColor: "#FF3D00",
+        borderWidth: 4,
+        padding: 5,
+        borderRadius: 50,
+        alignItems: "center",
+      }}
+    >
       <Image
         source={require("../../assets/businessman.png")}
         style={styles.imgStorie}
@@ -43,7 +45,6 @@ const styles = StyleSheet.create({
   storieContainer: {
     marginLeft: 10,
     width: 70,
-    
   },
   scroolContainer: {
     flexDirection: "row",

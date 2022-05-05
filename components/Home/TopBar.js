@@ -1,7 +1,9 @@
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const TopBar = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.leftTopBar}>
@@ -14,7 +16,7 @@ const TopBar = () => {
             style={styles.icons}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={{ position: "relative" }}>
+        <TouchableOpacity onPress={()=> navigation.navigate("Messages")} style={{ position: "relative" }}>
           <Image
             source={require("../../assets/instagram-direto.png")}
             style={styles.icons}
