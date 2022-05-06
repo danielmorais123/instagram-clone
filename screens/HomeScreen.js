@@ -1,11 +1,4 @@
-import {
-  View,
- 
-  StyleSheet,
-
-  ScrollView,
-  
-} from "react-native";
+import { View, Button, StyleSheet, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from "../firebase";
@@ -18,9 +11,11 @@ import PostsTab from "../components/Home/PostsTab";
 import LoginScreen from "./LoginScreen";
 import Footer from "../components/Home/Footer";
 
+
 const HomeScreen = () => {
   const [user, setUser] = useState(null);
   const navigation = useNavigation();
+
   const signOutButton = () => {
     signOut(auth)
       .then(() => {
@@ -37,17 +32,20 @@ const HomeScreen = () => {
         setUser(user);
       } else {
         setUser(null);
+        navigation.navigate("Login");
       }
     });
     return () => unSubscribe();
   }, []);
 
+  
   return (
     <View style={styles.container}>
       <TopBar />
       <ScrollView>
         <StoriesTab />
         <PostsTab />
+        
       </ScrollView>
       <Footer />
     </View>

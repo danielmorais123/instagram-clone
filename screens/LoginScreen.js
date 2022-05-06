@@ -7,16 +7,16 @@ import {
   Dimensions,
   Image,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
-import { useNavigation } from "@react-navigation/native";
+import LottieView from 'lottie-react-native';
 import { getAuth, signInWithPopup, FacebookAuthProvider } from "firebase/auth";
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigation = useNavigation();
+  const animation = useRef(null);
   const provider = new FacebookAuthProvider();
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const LoginScreen = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        navigation.navigate("Home");
+       
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -46,6 +46,11 @@ const LoginScreen = () => {
       });
   };
 
+  useEffect(() => {
+    // You can control the ref programmatically, rather than using autoPlay
+     animation.current?.play();
+  }, []);
+
   const handleSignInWithFacebook = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -56,7 +61,6 @@ const LoginScreen = () => {
         const credential = FacebookAuthProvider.credentialFromResult(result);
         const accessToken = credential.accessToken;
 
-        // ...
       })
       .catch((error) => {
         // Handle Errors here.
@@ -67,7 +71,7 @@ const LoginScreen = () => {
         // The AuthCredential type that was used.
         const credential = FacebookAuthProvider.credentialFromError(error);
 
-        // ...
+      
       });
   };
 
@@ -96,6 +100,17 @@ const LoginScreen = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.containerView}>
+      <LottieView
+        autoPlay
+        ref={animation}
+        style={{
+          width: 238,
+          height: 219,
+         
+        }}
+        // Find more Lottie files at https://lottiefiles.com/featured
+        source={require('../assets/animations/login2.json')}
+      />
         <Text
           style={{
             marginBottom: 10,

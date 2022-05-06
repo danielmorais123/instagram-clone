@@ -9,6 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 const Footer = () => {
   const navigation = useNavigation();
   const [user, setUser] = useState(null);
+ 
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
@@ -21,6 +22,8 @@ const Footer = () => {
     return () => unSubscribe();
   }, []);
 
+
+ 
   const signOutButton = () => {
     signOut(auth)
       .then(() => {
@@ -50,15 +53,16 @@ const Footer = () => {
           source={require("../../assets/search.png")}
         />
       </TouchableOpacity>
+      <TouchableOpacity onPress={()=> navigation.navigate("Camera")}>
+        <Image
+          style={styles.icons}
+          source={require("../../assets/more.png")}
+        />
+      </TouchableOpacity>
       <TouchableOpacity>
         <Image style={styles.icons} source={require("../../assets/mark.png")} />
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Image
-          style={styles.icons}
-          source={require("../../assets/gostar.png")}
-        />
-      </TouchableOpacity>
+      
       { !user ? 
       <TouchableOpacity onPress={() => navigation.navigate("Login")}>
         <Image
@@ -74,6 +78,7 @@ const Footer = () => {
         />
       </TouchableOpacity>
       }
+      
     </View>
   );
 };
