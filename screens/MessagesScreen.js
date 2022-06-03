@@ -13,7 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 const messagesFromUser = [
   {
     userName: "Natacha Azevedo",
-    messageText: "ÉS TODO BOM NA CAMA",
+    messageText: "Ola",
     photoProfile: require('../assets/natacha.png'),
   }, {
     userName: "Paulo Alberto",
@@ -28,7 +28,7 @@ const messagesFromUser = [
  
   {
     userName: "Chico da Tina",
-    messageText: "Vamos enrabar o Paulo",
+    messageText: "Lets gooo",
     photoProfile: require('../assets/chico.png'),
   },
 ];
